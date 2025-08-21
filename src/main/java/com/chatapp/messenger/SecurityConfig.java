@@ -25,7 +25,8 @@ public class SecurityConfig {
         http.
                 authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .anyRequest().authenticated()
+                                .requestMatchers("/user/*").hasRole("USER")
+                                .anyRequest().permitAll()
 
                 )
                 .csrf(AbstractHttpConfigurer::disable)
@@ -37,8 +38,11 @@ public class SecurityConfig {
                         .userInfoEndpoint(endpointConfig -> endpointConfig
                                 .userService(customOAuth2UserService)
                         )
+
                 );
 
         return http.build();
     }
+
+
 }
