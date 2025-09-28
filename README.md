@@ -1,5 +1,9 @@
 1. 카카오 oauth 로그인 기능
+
+
    <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/b90e6ac4-e136-493e-9c0c-1b8fe5e055cb" />
+
+
    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' 라이브러리 사용.
 
    사용자가 /oauth2/authorization/kakao 로 로그인 시도
