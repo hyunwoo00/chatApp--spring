@@ -2,8 +2,8 @@ package com.chatapp.messenger.service;
 
 import com.chatapp.messenger.domain.Friend;
 import com.chatapp.messenger.domain.User;
-import com.chatapp.messenger.exception.NonExistentFriendException;
-import com.chatapp.messenger.exception.NonExistentUserException;
+import com.chatapp.messenger.exception.BusinessException;
+import com.chatapp.messenger.exception.errorcode.ErrorCode;
 import com.chatapp.messenger.repository.FriendRepository;
 import com.chatapp.messenger.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ public class FriendService {
      */
     public Long friendRequest(Long senderUserId, Long receiverUserId){
         User sender = userRepository.findById(senderUserId)
-                .orElseThrow(() -> new NonExistentUserException("존재하지 않는 유저입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
         User receiver = userRepository.findById(receiverUserId)
-                .orElseThrow(() -> new NonExistentUserException("존재하지 않는 유저입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
         Friend friend = Friend.sendFriendRequest(sender, receiver);
 
@@ -42,7 +42,7 @@ public class FriendService {
      */
     public void acceptFriendRequest(Long friendId) {
         Friend request = friendRepository.findById(friendId)
-                .orElseThrow(() -> new NonExistentFriendException("존재하지 않는 친구요청입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_REQUEST));
 
         request.accept();
     }
@@ -53,7 +53,7 @@ public class FriendService {
      */
     public void blockFriend(Long friendId) {
         Friend request = friendRepository.findById(friendId)
-                .orElseThrow(() -> new NonExistentFriendException("존재하지 않는 친구입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.FRIEND_NOT_FOUND));
 
         request.block();
     }
@@ -64,7 +64,7 @@ public class FriendService {
      */
     public void unBlockFriend(Long friendId) {
         Friend request = friendRepository.findById(friendId)
-                .orElseThrow(() -> new NonExistentFriendException("존재하지 않는 친구입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.FRIEND_NOT_FOUND));
 
         request.unBlock();
     }

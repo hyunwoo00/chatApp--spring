@@ -6,8 +6,8 @@ import com.chatapp.messenger.domain.Message;
 import com.chatapp.messenger.domain.User;
 import com.chatapp.messenger.dto.MessageRequestDto;
 import com.chatapp.messenger.dto.MessageResponseDto;
-import com.chatapp.messenger.exception.NonExistentChatRoomException;
-import com.chatapp.messenger.exception.NonExistentUserException;
+import com.chatapp.messenger.exception.BusinessException;
+import com.chatapp.messenger.exception.errorcode.ErrorCode;
 import com.chatapp.messenger.repository.ChatRoomRepository;
 import com.chatapp.messenger.repository.MessageRepository;
 import com.chatapp.messenger.repository.UserRepository;
@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -41,9 +40,9 @@ public class ChatController {
         String email = kakaoUserInfo.getEmail();
 
         User sender = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NonExistentUserException("회원등록 되지 않은 이메일입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
         ChatRoom chatRoom = chatRoomRepository.findById(Long.parseLong(roomId))
-                .orElseThrow(() -> new NonExistentChatRoomException("존재하지 않는 채팅방입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_FOUND));
 
 
         Message message = new Message(chatRoom, sender, request.getContent(), request.getType(), LocalDateTime.now());
