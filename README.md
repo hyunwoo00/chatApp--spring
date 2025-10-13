@@ -1,5 +1,5 @@
-1. 카카오 oauth 로그인 기능
-
+ 카카오 oauth 로그인 기능
+----------------------------
 
    <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/b90e6ac4-e136-493e-9c0c-1b8fe5e055cb" />
 
